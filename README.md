@@ -13,3 +13,6 @@ Feel free to comment, so that we both can (hopefully) benefit from it!
 
 Link to the book:
 http://www.crackingthecodinginterview.com/
+
+Link to the associated Google Doc with an initial version of the code:
+https://docs.google.com/document/d/1KR1q8vYwO9Ot3TiDMwJhNDTwTwWAAwlPX5SHb2R00cs/edit?usp=sharing
