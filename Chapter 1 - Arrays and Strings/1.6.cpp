@@ -32,6 +32,21 @@ void rotate90(int** image, int N)
 	}
 }
 
+void rotate90Layerwise(int** image, int N)
+{
+	for (int layer = 0; layer < N/2; ++layer)
+	{
+		for (int i = layer; i < N - 1 - layer; ++i)
+		{
+			int top = image[layer][i];
+			image[layer][i] = image[N-1-i][layer];
+			image[N-1-i][layer] = image[N-1-layer][N-1-i];
+			image[N-1-layer][N-1-i] = image[i][N-1-layer];
+			image[i][N-1-layer] = top;			
+		}
+	}
+}
+
 void printImage2(int** image, int N)
 {
     for (int i = 0; i < N; ++i)
@@ -64,7 +79,7 @@ int main()
 
     std::cout << "Before:" << std::endl;
     printImage(image, N);
-    rotate90(image, N);
+    rotate90Layerwise(image, N);
     std::cout << "After:" << std::endl;
     printImage(image, N);
 
