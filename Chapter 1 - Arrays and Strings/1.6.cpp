@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iterator>
+#include <algorithm>
 
 void rotate90(int** image, int N)
 {
@@ -30,7 +32,7 @@ void rotate90(int** image, int N)
 	}
 }
 
-void printImage(int** image, int N)
+void printImage2(int** image, int N)
 {
     for (int i = 0; i < N; ++i)
     {
@@ -40,6 +42,11 @@ void printImage(int** image, int N)
         }
         std::cout << std::endl;
     }
+}
+
+void printImage(int** image, int N)
+{
+    std::for_each(image, image + N, [=](int* row){std::copy(row, row + N, std::ostream_iterator<int>{std::cout, "\t"}); std::cout << std::endl;});
 }
 
 int main()
