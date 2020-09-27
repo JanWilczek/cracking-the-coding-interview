@@ -41,16 +41,26 @@ void conditionalZero(int** matrix, int M, int N)
 
 int main()
 {
-    const int M = 3;
-    const int N = 5;
-    int matrix2[][N] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 13, 14};
-    int** matrix = reinterpret_cast<int**>(matrix2);
+    constexpr int M = 3;
+    constexpr int N = 5;
+    int** matrix = new int*[M];
+	for (int i = 0; i < M; ++i)
+	{
+		matrix[i] = new int[N]{N*i + 0, N*i + 1, N*i + 2, N*i + 3, N*i + 4};
+	}
+	matrix[1][2] = 0;
 
     std::cout << "Before:\n";
     printMatrix(matrix, M, N);
     conditionalZero(matrix, M, N);
     std::cout << "After:\n";
     printMatrix(matrix, M, N);
+
+	for (int i = 0; i < M; ++i)
+	{
+		delete[] matrix[i];
+	}
+	delete[] matrix;
 
     return 0;
 }
