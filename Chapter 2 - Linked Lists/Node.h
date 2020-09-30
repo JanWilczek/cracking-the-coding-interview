@@ -1,10 +1,12 @@
 #include <iostream>
 
+namespace unsafe {
 struct Node {
     Node * next = nullptr;
     int data;
     Node(int d) : data{d} {}
-    void appendToTail(int d) {
+    void appendToTail(int d) 
+    {
         auto n = this;
         while (n->next != nullptr) n = n->next;
         n->next = new Node{d};
@@ -41,7 +43,7 @@ Node* deleteNode(Node* head, int d)
     return head;
 }
 
-void printList(Node* head)
+void printList(const Node* head)
 {
     while (head)
     {
@@ -50,4 +52,6 @@ void printList(Node* head)
     }
 
     std::cout << "NULL" << std::endl;
+}
+
 }

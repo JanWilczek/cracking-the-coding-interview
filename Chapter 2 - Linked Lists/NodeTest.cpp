@@ -3,6 +3,8 @@
 
 void nodeTest()
 {
+    using namespace unsafe;
+
     auto head = new Node{1};
     head->appendToTail(2);
     head->appendToTail(3);
@@ -23,16 +25,14 @@ void nodeTest()
 
 void safeNodeTest()
 {
-    auto head = std::make_unique<SafeNode>(1);
-    head->appendToTail(2);
-    head->appendToTail(3);
-    head->appendToTail(4);
-    head->appendToTail(5);
+    using namespace safe;
+
+    auto head = getTestList();
     printList(head.get());
-    head = deleteSafeNode(std::move(head), 1);
-    head = deleteSafeNode(std::move(head), 3);
-    head = deleteSafeNode(std::move(head), 5);
-    head = deleteSafeNode(std::move(head), 6);
+    head = deleteNode(std::move(head), 1);
+    head = deleteNode(std::move(head), 3);
+    head = deleteNode(std::move(head), 5);
+    head = deleteNode(std::move(head), 6);
     printList(head.get());
 }
 
