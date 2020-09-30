@@ -38,22 +38,19 @@ std::unique_ptr<Node> removeDuplicatesNoBuffer(std::unique_ptr<Node> head)
 	while (n->next)
 	{
 		auto prev = n;
-        auto cur = n->next.get();
-		while (cur)
+		while (prev->next)
 		{
-			if (cur->data == n->data)
+			if (prev->next->data == n->data)
 			{
-				prev->next = std::move(cur->next);
-				cur = prev->next.get();
+				prev->next = std::move(prev->next->next);
 			}
 			else
-			{
-				prev = cur;
-				cur = cur->next.get();
-			}
+            {
+                prev = prev->next.get();
+            }
 		}
 
-		n = n->next.get();
+		if (n->next) n = n->next.get();
 	}
 
 	return head;
