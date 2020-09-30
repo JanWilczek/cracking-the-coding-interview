@@ -57,14 +57,14 @@ int nthToLastWithSeeker(Node* head, int n)
 
 Node* nthToLastRecurseHelper(Node* head, int& n)
 {
-	if (!head->next)
+	if (!head)
 	{
 		return nullptr;
 	}
 	Node* result = nthToLastRecurseHelper(head->next.get(), n);
 	if (!n--)
 	{
-		return head->next.get();
+		return head;
 	}
 	return result;
 }
