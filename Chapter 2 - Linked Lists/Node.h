@@ -1,3 +1,5 @@
+#include <iostream>
+
 struct Node {
     Node * next = nullptr;
     int data;
@@ -26,7 +28,29 @@ Node* deleteNode(Node* head, int d)
             n->next = n->next->next;
             delete nodeToDelete;
         }
-
-        n = n->next;
+        else
+        {
+            n = n->next;
+        }
     }
+
+    if (shouldDeleteHead)
+    {
+        auto result = head->next;
+        delete head;
+        return result;
+    }
+
+    return head;
+}
+
+void printList(Node* head)
+{
+    while (head)
+    {
+        std::cout << head->data << "\t->\t";
+        head = head->next;
+    }
+
+    std::cout << "NULL" << std::endl;
 }
