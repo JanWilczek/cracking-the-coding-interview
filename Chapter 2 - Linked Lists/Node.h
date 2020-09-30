@@ -15,9 +15,6 @@ Node* deleteNode(Node* head, int d)
 {
     if (!head) return nullptr;
 
-    bool shouldDeleteHead = false;
-    if (head->data == d) shouldDeleteHead = true;
-    
     auto n = head;
 
     while (n->next)
@@ -34,7 +31,7 @@ Node* deleteNode(Node* head, int d)
         }
     }
 
-    if (shouldDeleteHead)
+    if (head->data == d)
     {
         auto result = head->next;
         delete head;
