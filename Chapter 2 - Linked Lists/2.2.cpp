@@ -1,5 +1,6 @@
 #include "SafeNode.h"
 #include <exception>
+#include <assert.h>
 
 
 using namespace safe;
@@ -32,6 +33,29 @@ int nthToLast(Node* head, int n)
 	return cur->data;
 }
 
+int nthToLastWithSeeker(Node* head, int n)
+{
+	if (!head) throw std::invalid_argument{"Given list is empty."};
+
+	// Assume at least n elements in the list
+	auto seeker = head;
+	while (n--)
+	{
+		seeker = seeker->next.get();
+	}
+
+	auto nthToSeeker = head;
+
+	while (seeker->next)
+	{
+		seeker = seeker->next.get();
+		nthToSeeker = nthToSeeker->next.get();
+	}
+	
+	return nthToSeeker->data;
+}
+
+
 int main()
 {
     auto head = getTestList();
@@ -39,5 +63,6 @@ int main()
     for (int n = 0; n < 8; ++n)
     {
         std::cout << n << std::skipws << "th element to last:\t" << nthToLast(head.get(), n) << std::endl;
+        assert(nthToLast(head.get(), n) == nthToLastWithSeeker(head.get(), n));
     }
 }
