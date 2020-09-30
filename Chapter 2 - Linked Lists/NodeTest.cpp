@@ -23,17 +23,17 @@ void nodeTest()
 
 void safeNodeTest()
 {
-    auto head = std::make_shared<SafeNode>(1);
+    auto head = std::make_unique<SafeNode>(1);
     head->appendToTail(2);
     head->appendToTail(3);
     head->appendToTail(4);
     head->appendToTail(5);
-    printList(head);
-    head = deleteSafeNode(head, 1);
-    head = deleteSafeNode(head, 3);
-    head = deleteSafeNode(head, 5);
-    head = deleteSafeNode(head, 6);
-    printList(head);
+    printList(head.get());
+    head = deleteSafeNode(std::move(head), 1);
+    head = deleteSafeNode(std::move(head), 3);
+    head = deleteSafeNode(std::move(head), 5);
+    head = deleteSafeNode(std::move(head), 6);
+    printList(head.get());
 }
 
 int main()
