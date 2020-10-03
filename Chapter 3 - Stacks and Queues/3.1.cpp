@@ -22,7 +22,7 @@ struct ArrayStack
         if (stackId < 0 || stackId > 2) throw std::runtime_error{"Invalid stack id."};
         int top = array[stackId].next;
         int newTop = top + 3;
-        if (newTop > array.size()) array.resize(2*array.size());
+        if (newTop >= static_cast<int>(array.size())) array.resize(2*array.size());
         array[newTop] = Node{data, top};
         array[stackId].next = newTop;
 	}
@@ -49,4 +49,7 @@ int main()
     s.push(2,3);
     s.push(2,6);
     std::copy(s.array.begin(), s.array.end(), std::ostream_iterator<Node>(std::cout, " "));
+    std::cout << std::endl << s.pop(0) << s.pop(0) << s.pop(0) << std::endl;
+    std::cout << s.pop(1) << s.pop(1) << std::endl;
+    std::cout << s.pop(2) << s.pop(2) << std::endl;
 }
