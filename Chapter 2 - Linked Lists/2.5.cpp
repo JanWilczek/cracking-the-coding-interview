@@ -20,6 +20,40 @@ Node* findLoop(Node* head)
 	return nullptr;	// no loop found
 }
 
+Node* findLoopRunners(Node* head) // the two runners solution
+{
+	if (!head) return nullptr;
+
+    auto n1 = head;
+	auto n2 = head;
+	bool start = true;
+
+	while (start || n1 != n2)
+	{
+		if (start) start = false;
+
+		n1 = n1->next;
+		n2 = n2->next;
+
+        if (!n2) return nullptr; // no loop
+
+        n2 = n2->next;
+
+        if (!n2) return nullptr; // no loop
+	}
+	// the two runners met
+
+	n2 = head;
+	while (n1 != n2)
+	{
+		n1 = n1->next;
+		n2 = n2->next;
+	}
+
+	return n1;	
+}
+
+
 
 int main()
 {
@@ -33,6 +67,7 @@ int main()
 
     auto result = findLoop(head);
     assert(result == loopBegin);
+    assert(result == findLoopRunners(head));
 
     auto temp = head;
     for (int i = 0; i < 4; ++i)
