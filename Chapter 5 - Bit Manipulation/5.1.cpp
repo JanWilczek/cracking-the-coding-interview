@@ -3,10 +3,10 @@
 void setBitSubstring(int& N, int M, int i, int j)
 {
     assert(M >> (j - i + 1) == 0);
-    
+
 	int allOnes = ~0;
 	int halfMask = allOnes << (j+1);
-	int fullMask = halfMask | (allOnes >> (32 - i));
+	int fullMask = halfMask | ((1 << i) - 1);
 	M = M << i;
 	
 	// Zero bits for M
