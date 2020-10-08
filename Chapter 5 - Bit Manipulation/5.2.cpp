@@ -48,8 +48,8 @@ void decimalToBinary(const std::string& s)
 
         while (numDigitsAfterDecimalPoint--)
         {
-            afterDecimalPointAccurate *= 2;
-            if (afterDecimalPointAccurate >= 1)
+            afterDecimalPointAccurate *= 2.0f;
+            if (afterDecimalPointAccurate >= 1.0f)
             {
                 result += '1';
                 afterDecimalPointAccurate -= 1.0f;
