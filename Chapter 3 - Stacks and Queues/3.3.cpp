@@ -2,17 +2,15 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 
 template <typename T>
 class SetOfStacks
 {
+public:
 	using element_type = T;
 	using size_type = typename std::stack<T>::size_type;
 
-	typename std::stack<T>::size_type threshold;
-	typename std::vector<std::stack<T>>::size_type currentStack{0};
-	std::vector<std::stack<T>> stacks; 
-public:
 	explicit SetOfStacks(typename std::stack<T>::size_type thresh) : threshold{thresh}, stacks{std::vector<std::stack<T>>(1)} {}
 
     SetOfStacks(const SetOfStacks&)=default;
@@ -22,8 +20,16 @@ public:
 
 	T pop();
     T popAt(size_type index);
+    T popAtWithRollover(size_type index);
 	void push(T element);
     bool empty();
+
+private:
+	void rollover(std::stack<T>& to, std::stack<T>& from);
+
+	typename std::stack<T>::size_type threshold;
+	typename std::vector<std::stack<T>>::size_type currentStack{0};
+	std::vector<std::stack<T>> stacks; 
 };
 
 template <typename T>
@@ -94,6 +100,55 @@ T SetOfStacks<T>::popAt(size_type index)
 	return result;
 }
 
+template <typename T>
+T SetOfStacks<T>::popAtWithRollover(size_type index)
+{
+	if (index == currentStack) return pop();
+
+	if (index > currentStack) throw std::out_of_range{"Incorrect stack index!"};
+	
+	if (empty()) throw std::runtime_error{"Cannot pop from empty stack!"};
+
+	T result{stacks[index].top()};
+	stacks[index].pop();
+
+	for (auto i = index; i < currentStack; ++i)
+	{
+		rollover(stacks[i], stacks[i+1]);
+	}
+	
+	if (stacks[currentStack].empty()) --currentStack;
+
+	// For testing purposes
+	for (auto it = stacks.cbegin(); stacks.size() > 2 && it != stacks.cbegin() + currentStack - 1; ++it)
+	{
+		assert(it->size() == (it+1)->size());
+	}
+
+	return result;	
+}
+
+template <typename T>
+void SetOfStacks<T>::rollover(std::stack<T>& to, std::stack<T>& from)
+{
+	std::stack<T> helper;
+	
+	while (!from.empty())
+	{
+		helper.push(from.top());
+		from.pop();
+	}
+
+	to.push(helper.top());
+	helper.pop();
+
+	while (!helper.empty())
+	{
+		from.push(helper.top());
+		helper.pop();
+	}
+}
+
 
 int main()
 {
@@ -105,19 +160,23 @@ int main()
     ss.push(4);
     ss.push(5);
 
+    SetOfStacks<int> ss2{ss};
+
     std::cout << ss.popAt(1) << " " << ss.popAt(1) << std::endl;
 
     ss.push(6);
 
-    SetOfStacks<int> ss2{ss};
-
     while (!ss.empty())
     {
-        std::cout << ss.pop() << std::endl;
+        std::cout << ss.pop() << " ";
     }
+
+	std::cout << std::endl;
+
+    std::cout << ss2.popAtWithRollover(1) << std::endl;
 
     while(!ss2.empty())
     {
-        std::cout <<ss2.pop() << std::endl;
+        std::cout << ss2.pop() << " ";
     }
 }
