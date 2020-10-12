@@ -41,7 +41,7 @@ vector<stack<int>> prepareHanoi(int N)
 
 void hanoi(vector<stack<int>>& s, int origin, int destination, int helper)
 {
-    // printTowers(s);
+    printTowers(s);
 	if (s[destination].empty() || s[destination].top() > s[origin].top())
 	{
 		s[destination].push(s[origin].top());
@@ -50,6 +50,8 @@ void hanoi(vector<stack<int>>& s, int origin, int destination, int helper)
 	else
 	{
 		hanoi(s, destination, helper, origin);
+        hanoi(s, origin, destination, helper);
+        hanoi(s, helper, destination, origin);
 	}	
 }
 
@@ -58,13 +60,13 @@ void solveHanoi(int N)
     auto towers = prepareHanoi(N);
     while (!towers[0].empty())
     {
-        printTowers(towers);
         hanoi(towers, 0, 2, 1);
     }
+    printTowers(towers);
 }
 
 int main()
 {
-    int N = 3;
+    int N = 5;
     solveHanoi(N);
 }
