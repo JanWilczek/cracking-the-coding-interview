@@ -6,7 +6,6 @@ struct Node{
     Node *left{nullptr}, *right{nullptr};
 };
 
-
 int treeHeight(Node* root, bool& isBalanced)
 {
 	if (!root) return 0;
