@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -18,8 +19,11 @@ Node* constructNode(vector<int> sortedArray, int begin, int end)
     if (end == begin) return new Node{sortedArray[begin]};
 
     auto middle = (end + begin) / 2;
-    cout << middle << endl;
-    return new Node{sortedArray[middle], constructNode(sortedArray, begin, middle), constructNode(sortedArray, middle + 1, end)};
+    
+    auto leftChild = middle == begin ? nullptr : constructNode(sortedArray, begin, middle);
+    auto rightChild = middle + 1 == end ? nullptr : constructNode(sortedArray, middle + 1, end);
+
+    return new Node{sortedArray[middle], leftChild, rightChild };
 }
 
 Node* constructMinHeightBinaryTree(vector<int> sortedArray)
@@ -65,28 +69,74 @@ void destroyTree(Node* root)
 }
 
 template <typename F>
-void inOrder(Node* head, F&& f)
+void inOrder(Node* node, F&& f)
 {
-    if (!head) return;
+    if (!node) return;
 
-    inOrder(head->left, f);
-    f(head);
-    inOrder(head->right, f);
+    inOrder(node->left, f);
+    f(node);
+    inOrder(node->right, f);
+}
+
+void printTree(Node* root)
+{
+    int nb_spaces_bottom = 5;
+
+    auto height = treeHeight(root);
+    queue<Node*> bfsQueue;
+    bfsQueue.push(root);
+
+    for (auto n = 0; n < height; ++n)
+    {
+        int nodesOnTheLevel = std::pow(2, n);
+        int nb_spaces = n == height-1 ? nb_spaces_bottom : (nb_spaces_bottom + 1) * std::pow(2, height-n-1);
+        
+        for (auto s = 0; s < nb_spaces / 2 + 1; ++s) cout << ' ';
+
+        for (auto i = 0; i < nodesOnTheLevel; ++i)
+        {
+            auto node = bfsQueue.front();
+            bfsQueue.pop();
+
+            if (node)
+            {
+                bfsQueue.push(node->left);
+                bfsQueue.push(node->right);
+                cout << node->value;
+            }
+            else
+            {
+                cout << ' ';
+            }            
+
+            for (auto s = 0; s < nb_spaces; ++s) cout << ' ';
+        }
+
+        cout << endl;
+    }
 }
 
 void testConstructMinHeightBT()
 {
-    vector<int> values(9);
+    vector<int> values(15);
     std::iota(values.begin(), values.end(), 0);
 
-    auto head = constructMinHeightBinaryTree(values);
-    inOrder(head, [](Node*& n) {cout << n->value << " ";});
-    // assert(isBST(head));
-    auto height = treeHeight(head);
-    assert(height <= std::log2(values.size()));
+    auto root = constructMinHeightBinaryTree(values);
 
-    destroyTree(head);
-    delete head;
+    inOrder(root, [](Node*& n) {cout << n->value << " ";});
+    cout << endl;
+    
+    assert(isBST(root));
+    
+    printTree(root);
+    
+    auto height = treeHeight(root);
+    auto lowerBoundOnHeight = std::floor(std::log2(values.size()));
+    auto upperBoundOnBalancedHeight = lowerBoundOnHeight + 1;
+    assert(height <= upperBoundOnBalancedHeight);
+
+    destroyTree(root);
+    delete root;
 
     cout << "Success!\n";
 }
