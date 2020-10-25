@@ -4,27 +4,10 @@
 #include <queue>
 #include <cassert>
 #include <iostream>
-#include <cmath>
+#include "Node.h"
 
 using namespace std;
 
-
-struct Node{
-    Node(int val, unique_ptr<Node> l, unique_ptr<Node> r) : value{val}, left{move(l)}, right{move(r)} {}
-    int value;
-    unique_ptr<Node> left{nullptr}, right{nullptr};
-};
-
-
-int treeHeight(Node* root)
-{
-	if (!root) return 0;
-
-	auto leftSubtreeHeight = treeHeight(root->left.get());
-	auto rightSubtreeHeight = treeHeight(root->right.get());
-
-	return std::max(leftSubtreeHeight, rightSubtreeHeight) + 1;
-}
 
 vector<list<Node*>> nodesAtEachDepth(Node* bstRoot)
 {	

@@ -63,6 +63,9 @@ void printAllPathsSummingUpToTest()
 {
     auto root = testableBST();
     printAllPathsSummingUpTo(4, root.get());
+    cout << endl;
+    root = bigTestableBinaryTree();
+    printAllPathsSummingUpTo(4, root.get());
 }
 
 int main()
