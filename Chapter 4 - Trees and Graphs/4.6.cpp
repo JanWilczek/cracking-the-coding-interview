@@ -24,6 +24,7 @@ void commonParentTest()
     assert(commonParent(head->get(2), head->get(10)) ==  head->get(5));
     assert(commonParent(head->get(0), head->get(2)) ==  head->get(1));
     assert(commonParent(head->get(0), head->get(4)) ==  head->get(3));
+    assert(commonParent(head->get(5), head->get(10)) ==  head->get(5));
 }
 
 int main()
