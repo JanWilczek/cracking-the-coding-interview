@@ -118,7 +118,7 @@ void printTree(Node* root)
 
 void testConstructMinHeightBT()
 {
-    vector<int> values(15);
+    vector<int> values(10);
     std::iota(values.begin(), values.end(), 0);
 
     auto root = constructMinHeightBinaryTree(values);
