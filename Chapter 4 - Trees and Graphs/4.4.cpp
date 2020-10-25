@@ -71,22 +71,34 @@ vector<list<Node*>> nodesAtEachDepth2(Node* bstRoot)
 	bfsQueue.push(bstRoot);
 
 	auto level = 0;
-	auto nodesProcessed = 0;
+	bool isLevelEmpty{!bstRoot};
 
-	while (!bfsQueue.empty())
+	while (!isLevelEmpty && !bfsQueue.empty())
 	{
-		auto node = bfsQueue.front();
-		bfsQueue.pop();
+		auto nodesOnTheLevel = pow(2, level);
+		isLevelEmpty = true;
 
-		if (node)
-		{
-		    if (static_cast<typename decltype(nodesAt)::size_type>(level) >= nodesAt.size()) nodesAt.push_back(list<Node*>{});
-			bfsQueue.push(node->left.get());
-			bfsQueue.push(node->right.get());
-			nodesAt[level].push_back(node);
-			++nodesProcessed;
-			if (floor(log2(nodesProcessed)) >= level) ++level;
+        while(nodesOnTheLevel--)
+        {
+			auto node = bfsQueue.front();
+			bfsQueue.pop();
+
+			if (node)
+		    {
+			    isLevelEmpty = false;
+		        if (static_cast<typename decltype(nodesAt)::size_type>(level) >= nodesAt.size()) nodesAt.push_back(list<Node*>{});
+			    bfsQueue.push(node->left.get());
+			    bfsQueue.push(node->right.get());
+			    nodesAt[level].push_back(node);
+		    }
+            else
+		    {
+			    bfsQueue.push(nullptr);
+			    bfsQueue.push(nullptr);
+		    }
 		}
+
+		++level;
 	}
 
 	return nodesAt;
