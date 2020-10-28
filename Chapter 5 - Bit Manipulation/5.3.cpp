@@ -109,6 +109,5 @@ void nextSmallestFromOnesTest()
 }
 
 int main()
-{
-    nextLargestFromOnesTest();
+{   // With constexpr I don't even have to call out the test function!
 }
