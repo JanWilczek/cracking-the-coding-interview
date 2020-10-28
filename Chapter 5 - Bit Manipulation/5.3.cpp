@@ -17,9 +17,14 @@ constexpr int findRightmost(unsigned int digit, unsigned int number, int startPo
 	return startPosition;
 }
 
-[[nodiscard]] constexpr unsigned int flipBit(unsigned int a, int position)
+// [[nodiscard]] constexpr unsigned int flipBit(unsigned int a, int position)
+// {
+// 	return a ^ (1 << position);
+// }
+
+constexpr void flipBit(unsigned int& a, int position)
 {
-	return a ^ (1 << position);
+	a ^= (1 << position);
 }
 
 constexpr unsigned int nextLargestFromOnes(unsigned int a)
@@ -36,11 +41,11 @@ constexpr unsigned int nextLargestFromOnes(unsigned int a)
 	auto rightmost0_id = findRightmost(0, a, rightmost1_id);
 
 	// Turn on the 0
-	a = flipBit(a, rightmost0_id);
+	flipBit(a, rightmost0_id);
 
 	// Turn off the neighbouring 1
 	auto right1_id = rightmost0_id - 1;
-	a = flipBit(a, right1_id );
+	flipBit(a, right1_id );
 
 	// Move ones on the right of the zero as far as possible to the right
 	auto mask = (1 << right1_id) - 1;
@@ -66,11 +71,11 @@ constexpr unsigned int nextSmallestFromOnes(unsigned int a)
 	auto rightmost1_id = findRightmost(1, a, rightmost0_id);
 
 	// Turn off 1
-	a = flipBit(a, rightmost1_id);
+	flipBit(a, rightmost1_id);
 
 	// Turn on 0 on the right of that 1
 	auto right0_id = rightmost1_id-1;
-	a = flipBit(a, right0_id );
+	flipBit(a, right0_id );
 
 	// Move the ones on the right of that 0 as far left as possible (maximize tail)
 	auto mask = (1 << right0_id) - 1;
