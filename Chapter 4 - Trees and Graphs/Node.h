@@ -1,5 +1,5 @@
 #include <memory>
-#include <cmath>
+#include <algorithm>
 
 struct Node {
     Node(int val, Node* p, std::unique_ptr<Node> l = nullptr, std::unique_ptr<Node> r = nullptr) : value{val}, parent{p}, left{std::move(l)}, right{std::move(r)} {}
