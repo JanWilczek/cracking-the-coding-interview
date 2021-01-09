@@ -65,6 +65,6 @@ CallHandler& getCallHandler(Call c)
     }
     catch (NoSupervisorException& nse)
     {
-        // Throw a new exception, retry call handling in a loop, or return a CallHandler that informs the user that the call cannot be handled.
+        // Throw a new exception, retry call handling in a loop, enqueue the call, or return a CallHandler that informs the user that the call cannot be handled.
     }
 }
